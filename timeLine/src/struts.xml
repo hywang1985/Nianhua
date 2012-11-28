@@ -1,0 +1,142 @@
+<!-- /* * $Id: struts.xml 1311902 2012-04-10 18:20:25Z lukaszlenart $ * * 
+	Licensed to the Apache Software Foundation (ASF) under one * or more contributor 
+	license agreements. See the NOTICE file * distributed with this work for 
+	additional information * regarding copyright ownership. The ASF licenses 
+	this file * to you under the Apache License, Version 2.0 (the * "License"); 
+	you may not use this file except in compliance * with the License. You may 
+	obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 
+	* * Unless required by applicable law or agreed to in writing, * software 
+	distributed under the License is distributed on an * "AS IS" BASIS, WITHOUT 
+	WARRANTIES OR CONDITIONS OF ANY * KIND, either express or implied. See the 
+	License for the * specific language governing permissions and limitations 
+	* under the License. */ -->
+<!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+          "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- <package name="default" extends="struts-default"> -->
+	<!-- <action name="hello" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result name="success">hello.jsp</result> -->
+	<!-- <result name="tutorial" type="redirect">/tutorial/test.action</result> -->
+	<!-- </action> -->
+	<!-- </package> -->
+
+	<constant name="struts.devMode" value="true" />
+
+	<package name="timlineInit" namespace="/init" extends="json-default">
+		<action name="timeline_init" class="com.hywang.timeline.actions.TimeLineInitAction">
+			<result type="json" name="success">
+				<param name="root">timelineObj</param>
+			</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+	</package>
+
+	<package name="timelineUser" extends="struts-default"
+		namespace="/user">
+		<action name="user_login" class="com.hywang.timeline.actions.UserAction"
+			method="login">
+			<result name="success">/timeline.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+
+		<action name="user_logout" class="com.hywang.timeline.actions.UserAction"
+			method="logout">
+			<result name="success">/timeline.jsp</result>
+		</action>
+
+		<action name="user_register" class="com.hywang.timeline.actions.UserAction"
+			method="register">
+			<result name="success" type="redirect">/timeline.jsp?username=${username}
+			</result>
+			<result name="error" type="redirect">register.jsp</result>
+		</action>
+	</package>
+
+	<package name="timelineArticle" extends="json-default"
+		namespace="/article">
+		<action name="article_create" class="com.hywang.timeline.actions.ArticleAction"
+			method="createArticle">
+			<result name="create_success" type="redirect">/timeline.jsp</result>
+		</action>
+		<action name="article_list" class="com.hywang.timeline.actions.ArticleAction"
+			method="listArticles">
+			<result name="list_success" type="json">
+				<param name="root">listNodes</param>
+			</result>
+		</action>
+		<action name="article_load" class="com.hywang.timeline.actions.ArticleAction"
+			method="loadAricles">
+			<result name="load_success" type="json">
+				<param name="root">tableConfigObject</param>
+			</result>
+		</action>
+		<action name="article_delete" class="com.hywang.timeline.actions.ArticleAction"
+			method="delete" >
+			<result name="delete_success" type="json">
+				<param name="root">deleteStatus</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- <package name="tutorial" namespace="/tutorial" extends="struts-default"> -->
+	<!-- <result-types> -->
+	<!-- <result-type name="freemarker" default="true" -->
+	<!-- class="org.apache.struts2.views.freemarker.FreemarkerResult"/> -->
+	<!-- </result-types> -->
+<!---->
+	<!-- <action name="test" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result name="input">sitegraph/guess-input.ftl</result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test2" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result type="freemarker"> -->
+	<!-- <param name="location">org/apache/struts2/views/freemarker/callActionFreeMarker.ftl</param> -->
+	<!-- </result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test3" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result type="freemarker">org/apache/struts2/views/freemarker/nested.ftl</result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test4" class="org.apache.struts2.TestAction" method="executeThrowsException"> -->
+	<!-- <result type="freemarker"> -->
+	<!-- <param name="location">org/apache/struts2/views/freemarker/nested.ftl</param> -->
+	<!-- </result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test5" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result type="freemarker"> -->
+	<!-- <param name="location">org/apache/struts2/views/freemarker/callActionFreeMarker2.ftl</param> -->
+	<!-- </result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test6" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result type="freemarker"> -->
+	<!-- <param name="location">org/apache/struts2/views/freemarker/dynaAttributes.ftl</param> -->
+	<!-- </result> -->
+	<!-- </action> -->
+<!---->
+	<!-- <action name="test7" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result type="freemarker"> -->
+	<!-- <param name="location">org/apache/struts2/views/freemarker/manual-list.ftl</param> -->
+	<!-- </result> -->
+	<!-- </action> -->
+<!---->
+	<!-- </package> -->
+<!---->
+	<!-- <package name="sitegraph" namespace="/tutorial/sitegraph" extends="struts-default"> -->
+	<!-- <result-types> -->
+	<!-- <result-type name="freemarker" default="true" -->
+	<!-- class="org.apache.struts2.views.freemarker.FreemarkerResult"/> -->
+	<!-- </result-types> -->
+<!---->
+	<!-- <action name="guess" class="com.opensymphony.xwork2.ActionSupport"> -->
+	<!-- <result name="success" type="redirect">guess-success.jsp</result> -->
+	<!-- <result name="input">guess-input.ftl</result> -->
+	<!-- <result name="error">guess-error.ftl</result> -->
+	<!-- </action> -->
+	<!-- </package> -->
+</struts>

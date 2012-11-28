@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<!-- <filter>-->
+<!--  <description>Set charset for all request and response to UTF-8</description>-->
+<!--  <display-name>Charset Filter</display-name>-->
+<!--  <filter-name>charsetFilter</filter-name>-->
+<!--  <filter-class>com.hywang.timeline.filter.CharSetFilter</filter-class>-->
+<!-- </filter>-->
+<!-- <filter>-->
+<!--  <description>check the authorization of user</description>-->
+<!--  <display-name>User Filter</display-name>-->
+<!--  <filter-name>userFilter</filter-name>-->
+<!--  <filter-class>com.hywang.timeline.filter.UserAuthorizeFilter</filter-class>-->
+<!-- </filter>-->
+<!-- <filter>-->
+<!--  <description>determin whether the current connection should auto logon</description>-->
+<!--  <display-name>Auto Logon Filter</display-name>-->
+<!--  <filter-name>autoLogonFilter</filter-name>-->
+<!--  <filter-class>com.hywang.timeline.filter.UserAutoLogonFilter</filter-class>-->
+<!-- </filter>-->
+<!-- <filter-mapping>-->
+<!--  <filter-name>charsetFilter</filter-name>-->
+<!--  <url-pattern>/*</url-pattern>-->
+<!-- </filter-mapping>-->
+<!-- <filter-mapping>-->
+<!--  <filter-name>userFilter</filter-name>-->
+<!--  <servlet-name>UserProfileServlet</servlet-name>-->
+<!-- </filter-mapping>-->
+<!-- <filter-mapping>-->
+<!--  <filter-name>autoLogonFilter</filter-name>-->
+<!--  <url-pattern>/*</url-pattern>-->
+<!-- </filter-mapping>-->
+<!-- <servlet>-->
+<!--  <description>This servelt used to init my timeline</description>-->
+<!--  <display-name>This servelt used to init my timeline</display-name>-->
+<!--  <servlet-name>TimeLineInitServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.TimeLineInitServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>This servelt used to init my timeline by Category</description>-->
+<!--  <display-name>This servelt used to init my timeline by Category</display-name>-->
+<!--  <servlet-name>RetrieveNodeByCategory</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.RetrieveNodeByCategoryServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>Register user</description>-->
+<!--  <display-name>Register user</display-name>-->
+<!--  <servlet-name>RegisterUserServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.RegisterUserServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>Show user's profile dashboard</description>-->
+<!--  <display-name>Show user's profile dashboard</display-name>-->
+<!--  <servlet-name>UserProfileServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.UserProfileServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>This is user login page</description>-->
+<!--  <display-name>This is user login page</display-name>-->
+<!--  <servlet-name>LoginServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.LoginServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>Create your own article</description>-->
+<!--  <display-name>Create your own article</display-name>-->
+<!--  <servlet-name>NewArticleServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.NewArticleServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>user this servlet to logout user</description>-->
+<!--  <display-name>Logout servlet</display-name>-->
+<!--  <servlet-name>LogoutServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.LogoutServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>This servlet is used to load articles into table</description>-->
+<!--  <display-name>Load articles</display-name>-->
+<!--  <servlet-name>LoadArticlesServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.LoadArticlesServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>This servlet is used to list all articles</description>-->
+<!--  <display-name>List articles</display-name>-->
+<!--  <servlet-name>ListArticleServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.ListArticleServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet>-->
+<!--  <description>This servlet is used to delete article</description>-->
+<!--  <display-name>Delete article</display-name>-->
+<!--  <servlet-name>DeleteArticleServlet</servlet-name>-->
+<!--  <servlet-class>com.hywang.timeline.servlet.DeleteArticleServlet</servlet-class>-->
+<!-- </servlet>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>TimeLineInitServlet</servlet-name>-->
+<!--  <url-pattern>/TimeLineInitServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>RetrieveNodeByCategory</servlet-name>-->
+<!--  <url-pattern>/RetrieveNodeByCategoryServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>RegisterUserServlet</servlet-name>-->
+<!--  <url-pattern>/RegisterUserServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>UserProfileServlet</servlet-name>-->
+<!--  <url-pattern>/UserProfileServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>LoginServlet</servlet-name>-->
+<!--  <url-pattern>/LoginServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>NewArticleServlet</servlet-name>-->
+<!--  <url-pattern>/NewArticleServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>LogoutServlet</servlet-name>-->
+<!--  <url-pattern>/LogoutServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>LoadArticlesServlet</servlet-name>-->
+<!--  <url-pattern>/LoadArticlesServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>ListArticleServlet</servlet-name>-->
+<!--  <url-pattern>/ListArticleServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+<!-- <servlet-mapping>-->
+<!--  <servlet-name>DeleteArticleServlet</servlet-name>-->
+<!--  <url-pattern>/DeleteArticleServlet</url-pattern>-->
+<!-- </servlet-mapping>-->
+   <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+<!--        <init-param>-->
+<!--        	<param-name>actionPackages</param-name>-->
+<!--        	<param-value>com.mycompany.myapp.actions</param-value>-->
+<!--        </init-param>-->
+    </filter>
+
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+ <welcome-file-list>
+  <welcome-file>timeline.jsp</welcome-file>
+ </welcome-file-list>
+</web-app>
