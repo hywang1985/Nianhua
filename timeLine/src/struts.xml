@@ -20,9 +20,7 @@
 	<package name="userValidatedPackge" extends="json-default">
 		<interceptors>
 			<interceptor name="userAuthorizeInterceptor"
-				class="com.hywang.timeline.interceptors.UserAuthorizeInterceptor"></interceptor>
-			<interceptor name="userAutoLogonInterceptor"
-				class="com.hywang.timeline.interceptors.UserAutoLogonInterceptor"></interceptor>
+				class="userAuthorizeInterceptor"></interceptor>
 			<!-- 自定义拦截器栈,里面只验证是否用户登录了 -->
 			<interceptor-stack name="userValidators">
 				<interceptor-ref name="userAuthorizeInterceptor"></interceptor-ref>

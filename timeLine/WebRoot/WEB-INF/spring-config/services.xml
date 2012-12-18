@@ -8,4 +8,5 @@
 	<bean id="timelineInitAction" class="com.hywang.timeline.actions.TimeLineInitAction" scope="prototype"/>
 	<bean id="userAction" class="com.hywang.timeline.actions.UserAction" scope="prototype"/>
 	<bean id="articleAction" class="com.hywang.timeline.actions.ArticleAction" scope="prototype"/>
+	<bean id="userAuthorizeInterceptor" class="com.hywang.timeline.interceptors.UserAuthorizeInterceptor" scope="prototype"/>
 </beans>
