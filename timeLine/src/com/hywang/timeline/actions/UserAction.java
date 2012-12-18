@@ -21,6 +21,8 @@ public class UserAction extends BaseAction {
 	 */
 	private static final long serialVersionUID = 868246080845674572L;
 	
+	private int DEFAULT_COOKIE_LIFETIME=60*60*24*14; //default lifetime for cookie 2 weeks.
+	
 	private String username;
 
 	public String getUsername() {
@@ -57,35 +59,14 @@ public class UserAction extends BaseAction {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			 logger.error(e);
 		}
 		if (success) {
 			// login successfully,set the user to session
 			System.out.println("set user in to session"
 					+ httpServletRequest.getSession().getId());
 			httpServletRequest.getSession().setAttribute("user", user);
-			// String url = "/timeline.jsp?username="+uname;
-			// String url = "/timeline.jsp";
-			// // String url="/titleBar.jsp";
-			// System.out.println(url);
-			// // response.sendRedirect(url);
-			// httpServletRequest.getRequestDispatcher(url).forward(httpServletRequest,
-			// response);
 		}
-		// else{
-		// // httpServletResponse.setContentType("text/html");
-		// // PrintWriter out;
-		// // try {
-		// // out = httpServletResponse.getWriter();
-		// // out.print("那个...密码貌似不对啊，请再输一次");
-		// // out.flush();
-		// // out.close();
-		// // } catch (IOException e) {
-		// // e.printStackTrace();
-		// // }
-		// // response.sendRedirect("/user/login.jsp");
-		// }
-
 		return returnCode;
 	}
 	
@@ -104,7 +85,7 @@ public class UserAction extends BaseAction {
 	                userDao.deleteAutoLoginState(username, sessionid);
 	                returnCode=ActionSupport.SUCCESS;
 	            } catch (Exception e) {
-	                e.printStackTrace();
+	              logger.error(e);
 	            }
 	        }
 	        return returnCode;
@@ -114,12 +95,26 @@ public class UserAction extends BaseAction {
 			throws Exception {
 		String sessionId = httpServletRequest.getSession().getId();
 		Cookie useridCook = new Cookie("userid", Integer.toString(user.getId()));
+		useridCook.setPath("/");
+		useridCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie nameCook = new Cookie("username", user.getUserName());
+		nameCook.setPath("/");
+		nameCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie pwdCook = new Cookie("userpwd", user.getUserPwd());
+		pwdCook.setPath("/");
+		pwdCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie emailCook = new Cookie("email", user.getEmail());
+		emailCook.setPath("/");
+		emailCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie fnameCook = new Cookie("fname", user.getFirstName());
+		fnameCook.setPath("/");
+		fnameCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie lnameCook = new Cookie("lname", user.getLastName());
+		lnameCook.setPath("/");
+		lnameCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		Cookie sessionCook = new Cookie("sessionid", sessionId);
+		sessionCook.setPath("/");
+		sessionCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
 		httpServletResponse.addCookie(useridCook);
 		httpServletResponse.addCookie(nameCook);
 		httpServletResponse.addCookie(pwdCook);
@@ -147,7 +142,7 @@ public class UserAction extends BaseAction {
 	            httpServletRequest.getSession().setAttribute("user", user);
 	            returnCode=ActionSupport.SUCCESS;
 	        } catch (Exception e) {
-	            e.printStackTrace();
+	        	logger.error(e);
 	        }
 		return returnCode;
 	}

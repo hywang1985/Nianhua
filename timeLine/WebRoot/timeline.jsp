@@ -45,7 +45,7 @@
 		<script>
 		$().ready(function() {
 		var timeline = new VMM.Timeline();
-		timeline.init("/init/timeline_init");
+		timeline.init("/init/timeline_init"); //AJAX异步调用初始化，不要在这个ACTION做的时候加入interceptor返回到这个页面，否则会有不同步的问题
 
 		$("a#register").click(function() {
 			$("form#register-window").fadeIn(200);
@@ -90,7 +90,7 @@
 <div class="navbar" >
 	<div class="navbar-inner" style="padding: 0;">
 		<div class="container-fluid">
-			<a class="brand " href="#"><img src="js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
+			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
 			</ul>
@@ -110,7 +110,7 @@
 	<div class="navbar">
 	<div class="navbar-inner">
 		<div class="container-fluid">
-			<a class="brand " href="#"><img src="js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
+			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
 				<li><a href="#">Link Text</a></li>

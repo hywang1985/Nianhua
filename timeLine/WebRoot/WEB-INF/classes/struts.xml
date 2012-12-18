@@ -15,128 +15,73 @@
           "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<!-- <package name="default" extends="struts-default"> -->
-	<!-- <action name="hello" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result name="success">hello.jsp</result> -->
-	<!-- <result name="tutorial" type="redirect">/tutorial/test.action</result> -->
-	<!-- </action> -->
-	<!-- </package> -->
-
 	<constant name="struts.devMode" value="true" />
+	<constant name="struts.objectFactory" value="spring" />
+	<package name="userValidatedPackge" extends="json-default">
+		<interceptors>
+			<interceptor name="userAuthorizeInterceptor"
+				class="com.hywang.timeline.interceptors.UserAuthorizeInterceptor"></interceptor>
+			<interceptor name="userAutoLogonInterceptor"
+				class="com.hywang.timeline.interceptors.UserAutoLogonInterceptor"></interceptor>
+			<!-- 自定义拦截器栈,里面只验证是否用户登录了 -->
+			<interceptor-stack name="userValidators">
+				<interceptor-ref name="userAuthorizeInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 将自定义拦截器栈设置默认的拦截器 -->
+		<default-interceptor-ref name="userValidators"></default-interceptor-ref>
+		<global-results>
+			<result name="login" type="redirect">/user/login.jsp</result>
+		</global-results>
+	</package>
 
 	<package name="timlineInit" namespace="/init" extends="json-default">
-		<action name="timeline_init" class="com.hywang.timeline.actions.TimeLineInitAction">
+		<action name="timeline_init" class="timelineInitAction">
 			<result type="json" name="success">
 				<param name="root">timelineObj</param>
 			</result>
 			<result name="error">error.jsp</result>
 		</action>
-
+	
 	</package>
 
 	<package name="timelineUser" extends="struts-default"
 		namespace="/user">
-		<action name="user_login" class="com.hywang.timeline.actions.UserAction"
-			method="login">
+		<action name="user_login" class="userAction" method="login">
 			<result name="success">/timeline.jsp</result>
 			<result name="error">login.jsp</result>
 		</action>
 
-		<action name="user_logout" class="com.hywang.timeline.actions.UserAction"
-			method="logout">
+		<action name="user_logout"  class="userAction" method="logout">
 			<result name="success">/timeline.jsp</result>
 		</action>
 
-		<action name="user_register" class="com.hywang.timeline.actions.UserAction"
-			method="register">
-			<result name="success" type="redirect">/timeline.jsp?username=${username}
-			</result>
+		<action name="user_register" class="userAction" method="register">
+			<result name="success" type="redirect">/timeline.jsp?username=${username}</result>
 			<result name="error" type="redirect">register.jsp</result>
 		</action>
 	</package>
 
-	<package name="timelineArticle" extends="json-default"
+	<package name="timelineArticle" extends="userValidatedPackge"
 		namespace="/article">
-		<action name="article_create" class="com.hywang.timeline.actions.ArticleAction"
-			method="createArticle">
+		<action name="article_create" class="articleAction" method="createArticle">
 			<result name="create_success" type="redirect">/timeline.jsp</result>
 		</action>
-		<action name="article_list" class="com.hywang.timeline.actions.ArticleAction"
-			method="listArticles">
+		<action name="article_list" class="articleAction" method="listArticles">
 			<result name="list_success" type="json">
 				<param name="root">listNodes</param>
 			</result>
 		</action>
-		<action name="article_load" class="com.hywang.timeline.actions.ArticleAction"
-			method="loadAricles">
+		<action name="article_load" class="articleAction" method="loadAricles">
 			<result name="load_success" type="json">
 				<param name="root">tableConfigObject</param>
 			</result>
 		</action>
-		<action name="article_delete" class="com.hywang.timeline.actions.ArticleAction"
-			method="delete" >
+		<action name="article_delete" class="articleAction" method="delete">
 			<result name="delete_success" type="json">
 				<param name="root">deleteStatus</param>
 			</result>
 		</action>
 	</package>
-
-	<!-- <package name="tutorial" namespace="/tutorial" extends="struts-default"> -->
-	<!-- <result-types> -->
-	<!-- <result-type name="freemarker" default="true" -->
-	<!-- class="org.apache.struts2.views.freemarker.FreemarkerResult"/> -->
-	<!-- </result-types> -->
-<!---->
-	<!-- <action name="test" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result name="input">sitegraph/guess-input.ftl</result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test2" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result type="freemarker"> -->
-	<!-- <param name="location">org/apache/struts2/views/freemarker/callActionFreeMarker.ftl</param> -->
-	<!-- </result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test3" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result type="freemarker">org/apache/struts2/views/freemarker/nested.ftl</result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test4" class="org.apache.struts2.TestAction" method="executeThrowsException"> -->
-	<!-- <result type="freemarker"> -->
-	<!-- <param name="location">org/apache/struts2/views/freemarker/nested.ftl</param> -->
-	<!-- </result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test5" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result type="freemarker"> -->
-	<!-- <param name="location">org/apache/struts2/views/freemarker/callActionFreeMarker2.ftl</param> -->
-	<!-- </result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test6" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result type="freemarker"> -->
-	<!-- <param name="location">org/apache/struts2/views/freemarker/dynaAttributes.ftl</param> -->
-	<!-- </result> -->
-	<!-- </action> -->
-<!---->
-	<!-- <action name="test7" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result type="freemarker"> -->
-	<!-- <param name="location">org/apache/struts2/views/freemarker/manual-list.ftl</param> -->
-	<!-- </result> -->
-	<!-- </action> -->
-<!---->
-	<!-- </package> -->
-<!---->
-	<!-- <package name="sitegraph" namespace="/tutorial/sitegraph" extends="struts-default"> -->
-	<!-- <result-types> -->
-	<!-- <result-type name="freemarker" default="true" -->
-	<!-- class="org.apache.struts2.views.freemarker.FreemarkerResult"/> -->
-	<!-- </result-types> -->
-<!---->
-	<!-- <action name="guess" class="com.opensymphony.xwork2.ActionSupport"> -->
-	<!-- <result name="success" type="redirect">guess-success.jsp</result> -->
-	<!-- <result name="input">guess-input.ftl</result> -->
-	<!-- <result name="error">guess-error.ftl</result> -->
-	<!-- </action> -->
-	<!-- </package> -->
 </struts>

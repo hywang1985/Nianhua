@@ -1,10 +1,12 @@
 package com.hywang.timeline.actions;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -14,6 +16,9 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class BaseAction extends ActionSupport implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
+	
+	//name must be the subclass name
+	protected Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	private static final long serialVersionUID = -5051733506121706971L;
 

@@ -20,10 +20,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	
-	<link rel="stylesheet" type="text/css" href="../js/css/ui.css">
+	<link rel="stylesheet" type="text/css" href="<%=basePath%>js/css/ui.css">
 
-	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="js/jquery.md5.js"></script>
+	<script type="text/javascript" src="<%=basePath%>js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="<%=basePath%>js/jquery.md5.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$("#btn").click(function(){

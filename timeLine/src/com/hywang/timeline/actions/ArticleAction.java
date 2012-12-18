@@ -1,8 +1,5 @@
 package com.hywang.timeline.actions;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +55,7 @@ public class ArticleAction extends BaseAction {
 	private static final long serialVersionUID = 4481693444844035645L;
 
 	public String createArticle() {
+		logger.info("Creating new article...");
 		String returnCode = ActionSupport.ERROR;
 		String startDate = httpServletRequest.getParameter("startdate");
 		String endDate = httpServletRequest.getParameter("enddate");
@@ -87,12 +85,10 @@ public class ArticleAction extends BaseAction {
 				nodeDao.updateNodeRelation(userId, infectId);
 			}
 			returnCode = CREATE_SUCCESS;
+			logger.info("Article create success!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
-		// String url = "/timeline.jsp";
-		// System.out.println(url);
-		// response.sendRedirect(url);
 		return returnCode;
 	}
 
@@ -269,7 +265,7 @@ public class ArticleAction extends BaseAction {
 						"invalidate user object,need to login at first");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			listNodes.put("Result", "ERROR");
 			listNodes.put("Message", e.getMessage());
 		}
@@ -312,7 +308,7 @@ public class ArticleAction extends BaseAction {
 				// out.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e);
 			deleteStatus.put("ERROR", e.getMessage());
 			// out.print(deleteStatus);
 			// out.flush();
