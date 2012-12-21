@@ -6,7 +6,7 @@ Repository for Nianhua
 
 Introduction to Nianhua:
 
-Nianhua is an primary project launched by hywang & bchen.It is a web site based on lightweight java frameworks(S2SH).
+Nianhua is an primary project launched by hywang & bwang.It is a web site based on lightweight java frameworks(S2SH).
 
 The browser side of the website based on timeline.js ref:http://timeline.verite.co/
 
