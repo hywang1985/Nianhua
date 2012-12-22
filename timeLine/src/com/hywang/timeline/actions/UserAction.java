@@ -9,8 +9,8 @@ import org.apache.struts2.ServletActionContext;
 import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.UserDAO;
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.utils.CipherUtil;
-import com.hywang.timeline.utils.CookiesManager;
+import com.hywang.timeline.utils.cipher.CipherUtil;
+import com.hywang.timeline.utils.web.CookiesManager;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 

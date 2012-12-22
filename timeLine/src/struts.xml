@@ -71,12 +71,12 @@
 				<param name="root">listNodes</param>
 			</result>
 		</action>
-		<action name="article_load" class="articleAction" method="loadAricles">
+		<action name="article_load" class="articleAction" method="loadArticles">
 			<result name="load_success" type="json">
 				<param name="root">tableConfigObject</param>
 			</result>
 		</action>
-		<action name="article_delete" class="articleAction" method="delete">
+		<action name="article_delete" class="articleAction" method=" deleteArticle">
 			<result name="delete_success" type="json">
 				<param name="root">deleteStatus</param>
 			</result>

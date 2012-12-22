@@ -3,6 +3,7 @@ package com.hywang.timeline.actions;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,7 +11,9 @@ import net.sf.json.JSONObject;
 import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.TimlineNodeDAO;
 import com.hywang.timeline.entity.TimeLineNode;
-import com.hywang.timeline.utils.TimeLineNodeUtil;
+import com.hywang.timeline.utils.PropertiesUtil;
+import com.hywang.timeline.utils.time.TimeMeasure;
+import com.hywang.timeline.utils.timeline.TimeLineNodeUtil;
 
 public class TimeLineInitAction extends BaseAction {
 
@@ -38,8 +41,16 @@ public class TimeLineInitAction extends BaseAction {
 		JSONObject nodes = new JSONObject();
 		JSONArray commonNodes = new JSONArray();
 		Map nodeProperties = new HashMap();
+		TimeMeasure.display =Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.display"));
+		TimeMeasure.displaySteps = Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.displaySteps"));
+		TimeMeasure.measureActive = Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.measureActive"));
+		
+		String initArticles_key="Loading articles";
+		TimeMeasure.begin(initArticles_key);
 		try {
+			
 			allNodes = timelineDAO.getAllNodes();
+			TimeMeasure.step(initArticles_key, "Loading articles from database");
 			for (TimeLineNode node : allNodes) {
 				if (node.isStartNode()) { // if node is start node,init the
 											// properties
@@ -60,11 +71,12 @@ public class TimeLineInitAction extends BaseAction {
 					commonNodes.add(commonNode);
 				}
 			}
-
+			TimeMeasure.step(initArticles_key, "Generating timeline nodes via data");
 			nodes.put("date", commonNodes);// finally add all common nodes
 
 			timelineObj.put("timeline", nodes);
 			logger.info("Articles initialization success!");
+			TimeMeasure.end(initArticles_key);
 			return SUCCESS;
 
 		} catch (Exception e) {

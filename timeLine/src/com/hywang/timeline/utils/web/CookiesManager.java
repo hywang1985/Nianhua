@@ -1,4 +1,4 @@
-package com.hywang.timeline.utils;
+package com.hywang.timeline.utils.web;
 
 import javax.servlet.http.Cookie;
 

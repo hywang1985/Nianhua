@@ -14,6 +14,7 @@ import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.TimlineNodeDAO;
 import com.hywang.timeline.entity.TimeLineNode;
 import com.hywang.timeline.entity.User;
+import com.hywang.timeline.utils.time.TimeMeasure;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ArticleAction extends BaseAction {
@@ -112,7 +113,7 @@ public class ArticleAction extends BaseAction {
 		// date.set
 	}
 
-	public String loadAricles() {
+	public String loadArticles() {
 
 		String returnCode = ActionSupport.ERROR;
 		Map<String, Object> tableConfig = new HashMap<String, Object>();
@@ -153,6 +154,7 @@ public class ArticleAction extends BaseAction {
 
 		this.tableConfigObject = JSONObject.fromObject(tableConfig);
 		returnCode = LOAD_SUCCESS;
+		
 		return returnCode;
 	}
 
@@ -254,7 +256,6 @@ public class ArticleAction extends BaseAction {
 					row.put("media", node.getMedia());
 					row.put("caption", node.getCaption());
 					row.put("credit", node.getCredit());
-					System.out.println(JSONObject.fromObject(row).toString());
 					dataArray.add(JSONObject.fromObject(row).toString());
 					// dataArray.add(JSONObject.fromObject(row).toString());
 				}
@@ -281,7 +282,7 @@ public class ArticleAction extends BaseAction {
 		return returnCode;
 	}
 
-	public String delete() {
+	public String deleteArticle() {
 		String returnCode = ActionSupport.ERROR;
 		Object userObject = httpServletRequest.getSession()
 				.getAttribute("user");

@@ -1,4 +1,4 @@
-package com.hywang.timeline.utils;
+package com.hywang.timeline.utils.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

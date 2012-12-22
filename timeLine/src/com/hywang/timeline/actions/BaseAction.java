@@ -1,6 +1,5 @@
 package com.hywang.timeline.actions;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;

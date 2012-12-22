@@ -1,4 +1,4 @@
-package com.hywang.timeline.utils;
+package com.hywang.timeline.utils.timeline;
 
 import java.util.Calendar;
 import java.util.Date;
