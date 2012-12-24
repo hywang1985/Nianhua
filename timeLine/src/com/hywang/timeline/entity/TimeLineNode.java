@@ -49,7 +49,7 @@ public class TimeLineNode {
     private String bgrImg; //node's background img
 
     public String getBgrImg() {
-		return bgrImg;
+		return handelNull(bgrImg);
 	}
 
 	public void setBgrImg(String bgrImg) {
@@ -73,7 +73,7 @@ public class TimeLineNode {
     }
 
     public String getHeadline() {
-        return headline;
+        return handelNull(headline);
     }
 
     public void setHeadline(String headline) {
@@ -81,7 +81,7 @@ public class TimeLineNode {
     }
 
     public String getText() {
-        return text;
+        return handelNull(text);
     }
 
     public void setText(String text) {
@@ -98,7 +98,7 @@ public class TimeLineNode {
     }
 
     public String getTags() {
-        return tags;
+         return handelNull(tags);
     }
 
     public void setTags(String tags) {
@@ -132,7 +132,7 @@ public class TimeLineNode {
     }
     
     public String getMedia() {
-        return media;
+        return handelNull(media);
     }
 
     
@@ -152,12 +152,19 @@ public class TimeLineNode {
 
     
     public String getCaption() {
-        return caption;
+        return handelNull(caption);
     }
 
     
     public void setCaption(String caption) {
         this.caption = caption;
+    }
+    
+    private String handelNull(String value){
+    	if( value==null|| value.isEmpty()){ //A specific case is: the value is null, it will be stored into database with content "null"
+    		return "";
+    	}
+    	return value;
     }
 
 }

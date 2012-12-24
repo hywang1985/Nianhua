@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 /**
  * Timer to measure elapsed time of any process or between steps.
  * 
@@ -38,7 +40,12 @@ public class TimeMeasure {
 
     public static ITimeMeasureLogger logger;
 
-    public static String logFilePath;
+   
+    public void setLogger(ITimeMeasureLogger logger) {
+		TimeMeasure.logger = logger;
+	}
+
+	public static String logFilePath;
 
     // key represent the idTimer,value map represent the log rows.
     private static Map<String, List<Map<Integer, Object>>> logValue = new HashMap<String, List<Map<Integer, Object>>>();

@@ -4,12 +4,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.StrutsStatics;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
+@Component("userAuthorizeInterceptor")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class UserAuthorizeInterceptor extends AbstractInterceptor {
 
 	private static final long serialVersionUID = 2862807663966062544L;

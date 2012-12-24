@@ -3,10 +3,13 @@ package com.hywang.timeline.actions;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
 import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.TimlineNodeDAO;
@@ -15,6 +18,9 @@ import com.hywang.timeline.utils.PropertiesUtil;
 import com.hywang.timeline.utils.time.TimeMeasure;
 import com.hywang.timeline.utils.timeline.TimeLineNodeUtil;
 
+
+@Controller("timelineInitAction")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TimeLineInitAction extends BaseAction {
 
 	private JSONObject timelineObj = null;
@@ -44,6 +50,8 @@ public class TimeLineInitAction extends BaseAction {
 		TimeMeasure.display =Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.display"));
 		TimeMeasure.displaySteps = Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.displaySteps"));
 		TimeMeasure.measureActive = Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.measureActive"));
+		TimeMeasure.isLogToFile= Boolean.parseBoolean(PropertiesUtil.getProperty("TimeMeasure.isLogToFile"));
+		TimeMeasure.logFilePath=PropertiesUtil.getProperty("TimeMeasure.logFilePath");
 		
 		String initArticles_key="Loading articles";
 		TimeMeasure.begin(initArticles_key);

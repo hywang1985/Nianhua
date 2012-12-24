@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -14,9 +18,10 @@ import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.TimlineNodeDAO;
 import com.hywang.timeline.entity.TimeLineNode;
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.utils.time.TimeMeasure;
 import com.opensymphony.xwork2.ActionSupport;
 
+@Controller("articleAction")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ArticleAction extends BaseAction {
 
 	private static final String CREATE_SUCCESS = "create_success";

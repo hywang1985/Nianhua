@@ -5,6 +5,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
 import com.hywang.timeline.DAOFactory;
 import com.hywang.timeline.dao.UserDAO;
@@ -14,6 +17,8 @@ import com.hywang.timeline.utils.web.CookiesManager;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
+@Controller("userAction")
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class UserAction extends BaseAction {
 
 	/**
