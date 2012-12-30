@@ -9,6 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.springframework.stereotype.Controller;
+
+@Controller
 public class CharSetFilter implements Filter {
 
     private static final String TIMELINE_CHARSET = "UTF-8"; //$NON-NLS-N$

@@ -7,13 +7,13 @@ import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.hywang.timeline.DAOFactory;
-import com.hywang.timeline.dao.TimlineNodeDAO;
 import com.hywang.timeline.entity.TimeLineNode;
+import com.hywang.timeline.persistence.dao.TimlineNodeDAO;
 import com.hywang.timeline.utils.PropertiesUtil;
 import com.hywang.timeline.utils.time.TimeMeasure;
 import com.hywang.timeline.utils.timeline.TimeLineNodeUtil;
@@ -24,6 +24,17 @@ import com.hywang.timeline.utils.timeline.TimeLineNodeUtil;
 public class TimeLineInitAction extends BaseAction {
 
 	private JSONObject timelineObj = null;
+	
+	@Autowired
+	private TimlineNodeDAO timelineDAO;
+
+	public TimlineNodeDAO getTimelineDAO() {
+		return timelineDAO;
+	}
+
+	public void setTimelineDAO(TimlineNodeDAO timelineDAO) {
+		this.timelineDAO = timelineDAO;
+	}
 
 	public JSONObject getTimelineObj() {
 		return timelineObj;
@@ -40,8 +51,6 @@ public class TimeLineInitAction extends BaseAction {
 
 	@Override
 	public String execute() throws Exception {
-		TimlineNodeDAO timelineDAO = DAOFactory.getInstance()
-				.createTimelineNodeDAO();
 		List<TimeLineNode> allNodes;
 		timelineObj = new JSONObject();
 		JSONObject nodes = new JSONObject();
@@ -60,7 +69,7 @@ public class TimeLineInitAction extends BaseAction {
 			allNodes = timelineDAO.getAllNodes();
 			TimeMeasure.step(initArticles_key, "Loading articles from database");
 			for (TimeLineNode node : allNodes) {
-				if (node.isStartNode()) { // if node is start node,init the
+				if (node.getIsStartNode()) { // if node is start node,init the
 											// properties
 					/**
 					 * "headline":"The Kitchen Sink", "type":"default",
@@ -88,6 +97,7 @@ public class TimeLineInitAction extends BaseAction {
 			return SUCCESS;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.error(e);
 		} finally {
 			logger.info("Articles initialization finished!");

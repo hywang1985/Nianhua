@@ -5,13 +5,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import com.hywang.timeline.DAOFactory;
-import com.hywang.timeline.dao.UserDAO;
+import com.hywang.timeline.entity.LogonValidationInfo;
 import com.hywang.timeline.entity.User;
+import com.hywang.timeline.persistence.dao.UserDAO;
 import com.hywang.timeline.utils.cipher.CipherUtil;
 import com.hywang.timeline.utils.web.CookiesManager;
 import com.opensymphony.xwork2.ActionContext;
@@ -21,14 +22,23 @@ import com.opensymphony.xwork2.ActionSupport;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class UserAction extends BaseAction {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 868246080845674572L;
 	
 	private int DEFAULT_COOKIE_LIFETIME=60*60*24*14; //default lifetime for cookie 2 weeks.
 	
 	private String username;
+	
+	@Autowired
+	private UserDAO udao;
+
+
+	public UserDAO getUdao() {
+		return udao;
+	}
+
+	public void setUdao(UserDAO udao) {
+		this.udao = udao;
+	}
 
 	public String getUsername() {
 		return username;
@@ -49,7 +59,6 @@ public class UserAction extends BaseAction {
 
 		User user = null;
 		try {
-			UserDAO udao = DAOFactory.getInstance().createUserDAO();
 			user = udao.getUserByName(uname);
 			if (user != null) {
 				if (CipherUtil.validatePassword(user.getUserPwd(), pwd)) {
@@ -85,9 +94,8 @@ public class UserAction extends BaseAction {
 	            session.removeAttribute("user");
 	            System.out.println("delete user from session: "+session.getId());
 	            String sessionid = CookiesManager.getValue(httpServletRequest.getCookies(), "sessionid");
-	            UserDAO userDao = DAOFactory.getInstance().createUserDAO();
 	            try {
-	                userDao.deleteAutoLoginState(username, sessionid);
+	            	udao.deleteAutoLoginState(username, sessionid);
 	                returnCode=ActionSupport.SUCCESS;
 	            } catch (Exception e) {
 	              logger.error(e);
@@ -99,6 +107,14 @@ public class UserAction extends BaseAction {
 	private void rememberUser(String uname, User user, UserDAO udao)
 			throws Exception {
 		String sessionId = httpServletRequest.getSession().getId();
+		generateAutoLogonCookies(user, sessionId);
+		LogonValidationInfo logonInfo = new LogonValidationInfo();
+		logonInfo.setSessionid(sessionId);
+		logonInfo.setUserName(uname);
+		udao.insertUserLogonValidateInfo(logonInfo);
+	}
+
+	private void generateAutoLogonCookies(User user, String sessionId) {
 		Cookie useridCook = new Cookie("userid", Integer.toString(user.getId()));
 		useridCook.setPath("/");
 		useridCook.setMaxAge(DEFAULT_COOKIE_LIFETIME);
@@ -127,7 +143,6 @@ public class UserAction extends BaseAction {
 		httpServletResponse.addCookie(fnameCook);
 		httpServletResponse.addCookie(lnameCook);
 		httpServletResponse.addCookie(sessionCook);
-		udao.insertUserLogonValidateInfo(uname, sessionId);
 	}
 
 	public String register() {
@@ -140,10 +155,9 @@ public class UserAction extends BaseAction {
 	        user.setUserPwd(pwd);
 	        user.setEmail(email);
 	        
-	        UserDAO userDao=  DAOFactory.getInstance().createUserDAO();
 	        
 	        try {
-	            userDao.addUser(user);
+	        	udao.addUser(user);
 	            httpServletRequest.getSession().setAttribute("user", user);
 	            returnCode=ActionSupport.SUCCESS;
 	        } catch (Exception e) {

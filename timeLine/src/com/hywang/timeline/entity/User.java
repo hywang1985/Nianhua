@@ -1,9 +1,14 @@
 package com.hywang.timeline.entity;
 
+import java.io.Serializable;
+import java.util.Set;
 
-public class User {
+
+public class User implements Serializable{
     
-    private int id;
+	private static final long serialVersionUID = 4173276172275267409L;
+
+	private int id;
     
     private String firstName;
     
@@ -14,9 +19,21 @@ public class User {
     private String userPwd;
     
     private String email;
-
     
-    public int getId() {
+    private Set<TimeLineNode> nodes;
+
+
+	public Set<TimeLineNode> getNodes() {
+		return nodes;
+	}
+
+
+	public void setNodes(Set<TimeLineNode> nodes) {
+		this.nodes = nodes;
+	}
+
+
+	public int getId() {
         return id;
     }
 

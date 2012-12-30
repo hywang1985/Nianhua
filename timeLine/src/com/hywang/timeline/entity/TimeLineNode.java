@@ -1,5 +1,6 @@
 package com.hywang.timeline.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,9 +21,14 @@ import java.util.Date;
  * event node ended. Header--the event node title header Article--The articale content of the node Figure-This is a
  * standalone model which represent the object contains of another set of attributes.See Figure.java *
  * **/
-public class TimeLineNode {
+public class TimeLineNode implements Serializable{
 
-    private int ID;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3041922509808897758L;
+
+	private int ID;
 
     private Date startDate; // just use Java.utils.Date currently
 
@@ -36,15 +42,13 @@ public class TimeLineNode {
 
     private String tags;
     
-    private Category cate;
-    
     private String media;
     
     private String credit;
     
     private String caption;
     
-    private User author;
+    private User author; //many to one,as many side
     
     private String bgrImg; //node's background img
 
@@ -89,11 +93,11 @@ public class TimeLineNode {
     }
 
 
-    public boolean isStartNode() {
+    public boolean getIsStartNode() {
         return isStartNode;
     }
 
-    public void setStartNode(boolean isStartNode) {
+    public void setIsStartNode(boolean isStartNode) {
         this.isStartNode = isStartNode;
     }
 
@@ -122,15 +126,6 @@ public class TimeLineNode {
     }
 
     
-    public Category getCate() {
-        return cate;
-    }
-
-    
-    public void setCate(Category cate) {
-        this.cate = cate;
-    }
-    
     public String getMedia() {
         return handelNull(media);
     }
@@ -142,7 +137,7 @@ public class TimeLineNode {
 
     
     public String getCredit() {
-        return credit;
+        return handelNull(credit);
     }
 
     

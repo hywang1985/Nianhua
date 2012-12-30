@@ -3,21 +3,21 @@ package com.hywang.timeline.actions;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
-
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.hywang.timeline.DAOFactory;
-import com.hywang.timeline.dao.TimlineNodeDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
 import com.hywang.timeline.entity.TimeLineNode;
 import com.hywang.timeline.entity.User;
+import com.hywang.timeline.persistence.dao.TimlineNodeDAO;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Controller("articleAction")
@@ -37,6 +37,17 @@ public class ArticleAction extends BaseAction {
 	private JSONObject listNodes = null;
 
 	private JSONObject deleteStatus = null;
+	
+	@Autowired
+	private TimlineNodeDAO nodeDao;
+
+	public TimlineNodeDAO getNodeDao() {
+		return nodeDao;
+	}
+
+	public void setNodeDao(TimlineNodeDAO nodeDao) {
+		this.nodeDao = nodeDao;
+	}
 
 	public JSONObject getDeleteStatus() {
 		return deleteStatus;
@@ -79,16 +90,13 @@ public class ArticleAction extends BaseAction {
 		node.setHeadline(header);
 		node.setText(article);
 		node.setBgrImg(bgrimg);
-		TimlineNodeDAO nodeDao = DAOFactory.getInstance()
-				.createTimelineNodeDAO();
 		try {
-			int infectId = nodeDao.addNode(node);
 			Object userObject = httpServletRequest.getSession().getAttribute(
 					"user");
 			if (userObject != null) {
 				User user = (User) userObject;
-				int userId = user.getId();
-				nodeDao.updateNodeRelation(userId, infectId);
+				node.setAuthor(user);
+				nodeDao.addNode(node); //cascade update
 			}
 			returnCode = CREATE_SUCCESS;
 			logger.info("Article create success!");
@@ -233,8 +241,6 @@ public class ArticleAction extends BaseAction {
 
 	public String listArticles() {
 		String returnCode = ActionSupport.ERROR;
-		TimlineNodeDAO nodeDAO = DAOFactory.getInstance()
-				.createTimelineNodeDAO();
 		if (listNodes == null) {
 			listNodes = new JSONObject();
 		} else {
@@ -246,8 +252,8 @@ public class ArticleAction extends BaseAction {
 			Object userObject = httpServletRequest.getSession().getAttribute(
 					"user");
 			if (userObject != null && userObject instanceof User) {
-				int userid = ((User) userObject).getId();
-				List<TimeLineNode> nodes = nodeDAO.getNodesByUserID(userid);
+				User user = (User) userObject;
+				Set<TimeLineNode> nodes = nodeDao.getNodesByUser(user);
 				listNodes.put("Result", "OK");
 				// ID,startDate,endDate,headLine,text,tags,media,caption,credit
 				for (TimeLineNode node : nodes) {
@@ -276,21 +282,11 @@ public class ArticleAction extends BaseAction {
 			listNodes.put("Message", e.getMessage());
 		}
 
-		// PrintWriter out = response.getWriter();
-		// // out.print(jarray);
-		// // System.out.println(jarray.toString());
-		// System.out.println(data.toString());
-		// out.print(data);
-		// out.flush();
-		// out.close();
-
 		return returnCode;
 	}
 
 	public String deleteArticle() {
 		String returnCode = ActionSupport.ERROR;
-		Object userObject = httpServletRequest.getSession()
-				.getAttribute("user");
 		if (deleteStatus == null) {
 			deleteStatus = new JSONObject();
 		} else {
@@ -299,26 +295,14 @@ public class ArticleAction extends BaseAction {
 		try {
 			String nodeid = (String) httpServletRequest.getParameter("ID");
 			if (nodeid != null) {
-				TimlineNodeDAO nodeDao = DAOFactory.getInstance()
-						.createTimelineNodeDAO();
 				int intNodeId = Integer.parseInt(nodeid);
-				nodeDao.delNodeByID(intNodeId);
-				if (userObject != null) {
-					User user = (User) userObject;
-					nodeDao.deleteNodeRelation(user.getId(), intNodeId);
-				}
+				nodeDao.deleteNodeById(intNodeId);
 				deleteStatus.put("Result", "OK");
 				returnCode = DELETE_SUCCESS;
-				// out.print(deleteStatus);
-				// out.flush();
-				// out.close();
 			}
 		} catch (Exception e) {
 			logger.error(e);
 			deleteStatus.put("ERROR", e.getMessage());
-			// out.print(deleteStatus);
-			// out.flush();
-			// out.close();
 		} finally {
 		}
 		return returnCode;

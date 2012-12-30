@@ -12,13 +12,25 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.hywang.timeline.DAOFactory;
-import com.hywang.timeline.dao.UserDAO;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.hywang.timeline.entity.User;
+import com.hywang.timeline.persistence.dao.UserDAO;
 
 public class UserAutoLogonFilter implements Filter {
 
-    public void destroy() {
+	private UserDAO userDao;
+   
+	public UserDAO getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDAO userDao) {
+		this.userDao = userDao;
+	}
+
+	public void destroy() {
 
     }
 
@@ -65,7 +77,6 @@ public class UserAutoLogonFilter implements Filter {
                         sessionid = cookie.getValue();
                     }
                 }
-                UserDAO userDao = DAOFactory.getInstance().createUserDAO();
                 try {
                     isAutoLogin = userDao.getAutoLoginState(username, sessionid);// 如果在数据库中找到了相应记录，则说明可以自动登录。
                     if (isAutoLogin) {
@@ -87,8 +98,9 @@ public class UserAutoLogonFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    public void init(FilterConfig arg0) throws ServletException {
-
+    public void init(FilterConfig config) throws ServletException {
+    	WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+    	userDao= (UserDAO) wac.getBean("userDao");
     }
 
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.hywang.timeline.entity">
+
+	<class name="LogonValidationInfo" table="logonvalidation">
+		<id name="id">
+			<generator class="increment" />
+		</id>
+		<property name="userName" column="uname"/>
+		<property name="sessionid"/>
+	</class>
+
+</hibernate-mapping>

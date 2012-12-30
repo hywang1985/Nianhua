@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.hywang.timeline.entity">
+
+	<class name="TimeLineNode" table="timelinenode">
+		<id name="ID" column="id">
+			<generator class="increment" />
+		</id>
+		<property name="startDate" type="date">
+			<column name="starttime" sql-type="datetime" />
+		</property>
+		<property name="endDate" type="date">
+			<column name="endtime" sql-type="datetime" />
+		</property>
+		<property name="headline" type="text" column="header">
+		</property>
+		<property name="text" type="text" column="article">
+		</property>
+		<property name="isStartNode" column="titleSlide" />
+		<property name="tags" />
+		<property name="media" />
+		<property name="credit" />
+		<property name="caption" />
+		<property name="bgrImg" column="bgrimg" />
+		<many-to-one name="author" class="User" lazy="false"
+			column="user_id" cascade="all">
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>

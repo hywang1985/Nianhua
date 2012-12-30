@@ -36,12 +36,12 @@
 		<filter-name>struts2</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<!--Config Spring file-->
+	<!--Config Spring file -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-config/services.xml</param-value>
 	</context-param>
-	<!--Config Spring listener-->
+	<!--Config Spring listener -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
