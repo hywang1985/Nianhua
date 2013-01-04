@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.hywang.timeline.entity.LogonValidationInfo;
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.persistence.dao.UserDAO;
+import com.hywang.timeline.services.UserService;
 import com.hywang.timeline.utils.cipher.CipherUtil;
 import com.hywang.timeline.utils.web.CookiesManager;
 import com.opensymphony.xwork2.ActionContext;
@@ -28,16 +28,17 @@ public class UserAction extends BaseAction {
 	
 	private String username;
 	
-	@Autowired
-	private UserDAO udao;
+	
+	private UserService userService;
 
 
-	public UserDAO getUdao() {
-		return udao;
+	public UserService getUserService() {
+		return userService;
 	}
 
-	public void setUdao(UserDAO udao) {
-		this.udao = udao;
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 	public String getUsername() {
@@ -59,7 +60,7 @@ public class UserAction extends BaseAction {
 
 		User user = null;
 		try {
-			user = udao.getUserByName(uname);
+			user = userService.getUserByName(uname,true); // Need to init children as a proxy,so the lazy load will be work
 			if (user != null) {
 				if (CipherUtil.validatePassword(user.getUserPwd(), pwd)) {
 					success = true;
@@ -68,7 +69,7 @@ public class UserAction extends BaseAction {
 				// if remember,need to record to database
 				if (remember != null && !"".equals(remember)) {
 					if ("true".equals(remember)) { //$NON-NLS-N$
-						rememberUser(uname, user, udao);
+						rememberUser(uname, user, userService);
 					}
 				}
 			}
@@ -95,7 +96,7 @@ public class UserAction extends BaseAction {
 	            System.out.println("delete user from session: "+session.getId());
 	            String sessionid = CookiesManager.getValue(httpServletRequest.getCookies(), "sessionid");
 	            try {
-	            	udao.deleteAutoLoginState(username, sessionid);
+	            	userService.deleteAutoLoginState(username, sessionid);
 	                returnCode=ActionSupport.SUCCESS;
 	            } catch (Exception e) {
 	              logger.error(e);
@@ -104,7 +105,7 @@ public class UserAction extends BaseAction {
 	        return returnCode;
 	}
 
-	private void rememberUser(String uname, User user, UserDAO udao)
+	private void rememberUser(String uname, User user, UserService udao)
 			throws Exception {
 		String sessionId = httpServletRequest.getSession().getId();
 		generateAutoLogonCookies(user, sessionId);
@@ -157,7 +158,7 @@ public class UserAction extends BaseAction {
 	        
 	        
 	        try {
-	        	udao.addUser(user);
+	        	userService.addUser(user);
 	            httpServletRequest.getSession().setAttribute("user", user);
 	            returnCode=ActionSupport.SUCCESS;
 	        } catch (Exception e) {

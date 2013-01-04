@@ -14,7 +14,7 @@
 		<property name="lastName" column="lastname"/>
 		<property name="userPwd" column="password"/>
 		<property name="userName" column="username"/>
-		 <set name="nodes" inverse="true" cascade="all" lazy="false" table="timelinenode">
+		 <set name="nodes" inverse="true" cascade="all" lazy="true" table="timelinenode">
                 <key column="user_id" not-null="true"></key>
                 <one-to-many class="TimeLineNode"/>
           </set>

@@ -1,74 +1,78 @@
-package com.hywang.timeline.persistence.dao.impl;
+package com.hywang.timeline.services.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hywang.timeline.entity.TimeLineNode;
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.persistence.dao.TimlineNodeDAO;
+import com.hywang.timeline.services.TimlineNodeService;
 
 
-@Component
-public class TimelineNodeDAOImpl extends HibernateGenericDaoImpl implements TimlineNodeDAO {
+@Service
+@Transactional
+public class TimelineNodeServiceImpl implements TimlineNodeService{
 
 	private static String deleteQuery="delete TimeLineNode as node where node.ID=?";
 	
+	private HibernateDaoSupport dao;
 
-    public boolean deleteNode(TimeLineNode node)  throws DataAccessException{
-        return delete(node);
+    public HibernateDaoSupport getDao() {
+		return dao;
+	}
+    
+    @Autowired
+	public void setDao(HibernateDaoSupport dao) {
+		this.dao = dao;
+	}
+
+	public void deleteNode(TimeLineNode node)  throws DataAccessException{
+    	
+    	this.dao.getHibernateTemplate().delete(node);
     }
     
     @Override
-	public boolean deleteNodeById(int nodeId) throws DataAccessException {
-    	Session session = sessionFactory.getCurrentSession();
-    	Transaction tx=	session.getTransaction();
-    	tx.begin();
-    	Query q=session.createQuery(deleteQuery);
-    	q.setInteger(0, nodeId);
-    	int rowEffected =q.executeUpdate();
-    	tx.commit();
-		return rowEffected>0;
+	public void deleteNodeById(int nodeId) throws DataAccessException {
+    	this.dao.getHibernateTemplate().bulkUpdate(deleteQuery,nodeId);
 	}
     
 
     @SuppressWarnings("unchecked")
 	public List<TimeLineNode> getAllNodes() throws DataAccessException {
-    	  List<TimeLineNode> nodes =  (List<TimeLineNode>)this.findByExample(new TimeLineNode());
-        return nodes;
+        return this.dao.getHibernateTemplate().loadAll(TimeLineNode.class);
     }
     
 
     public TimeLineNode getNodeByID(int nodeId) throws DataAccessException {
-        return (TimeLineNode) findById(TimeLineNode.class.getName(), nodeId);
+        return this.dao.getHibernateTemplate().load(TimeLineNode.class, nodeId);
     }
     
-	@Override
-	public Set<TimeLineNode> getNodesByUser(User user) throws DataAccessException {
-		return user.getNodes(); //lazy=false,so can get it directly, problem is once data is too much,the memory cost is too much.
-	}
-
     
     public int addNode(TimeLineNode node) throws DataAccessException {
-    		save(node);
-    		return node.getID();
+		this.dao.getHibernateTemplate().save(node);
+		return node.getID();
     }
 
-    private String addQuote(String value) {
-       return "\'"+value+"\'";
-    }
+	@Override
+	public void initlinazeObject(Object proxy) {
+		Hibernate.initialize(proxy);
+	}
 
-    private String formatDate(java.util.Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-        String datetime = sdf.format(date);
-        return datetime;
-    }
+//    private String addQuote(String value) {
+//       return "\'"+value+"\'";
+//    }
+//
+//    private String formatDate(java.util.Date date) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+//        String datetime = sdf.format(date);
+//        return datetime;
+//    }
     
 
 //    public static void main(String[] args) {

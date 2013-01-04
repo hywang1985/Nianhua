@@ -17,7 +17,7 @@ import org.springframework.stereotype.Controller;
 
 import com.hywang.timeline.entity.TimeLineNode;
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.persistence.dao.TimlineNodeDAO;
+import com.hywang.timeline.services.TimlineNodeService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Controller("articleAction")
@@ -38,15 +38,17 @@ public class ArticleAction extends BaseAction {
 
 	private JSONObject deleteStatus = null;
 	
-	@Autowired
-	private TimlineNodeDAO nodeDao;
+	
+	private TimlineNodeService nodeService;
 
-	public TimlineNodeDAO getNodeDao() {
-		return nodeDao;
+
+	public TimlineNodeService getNodeService() {
+		return nodeService;
 	}
-
-	public void setNodeDao(TimlineNodeDAO nodeDao) {
-		this.nodeDao = nodeDao;
+	
+	@Autowired
+	public void setNodeService(TimlineNodeService nodeService) {
+		this.nodeService = nodeService;
 	}
 
 	public JSONObject getDeleteStatus() {
@@ -96,7 +98,7 @@ public class ArticleAction extends BaseAction {
 			if (userObject != null) {
 				User user = (User) userObject;
 				node.setAuthor(user);
-				nodeDao.addNode(node); //cascade update
+				nodeService.addNode(node); //cascade update
 			}
 			returnCode = CREATE_SUCCESS;
 			logger.info("Article create success!");
@@ -253,7 +255,7 @@ public class ArticleAction extends BaseAction {
 					"user");
 			if (userObject != null && userObject instanceof User) {
 				User user = (User) userObject;
-				Set<TimeLineNode> nodes = nodeDao.getNodesByUser(user);
+				Set<TimeLineNode> nodes = user.getNodes(); //lazy loading
 				listNodes.put("Result", "OK");
 				// ID,startDate,endDate,headLine,text,tags,media,caption,credit
 				for (TimeLineNode node : nodes) {
@@ -268,7 +270,6 @@ public class ArticleAction extends BaseAction {
 					row.put("caption", node.getCaption());
 					row.put("credit", node.getCredit());
 					dataArray.add(JSONObject.fromObject(row).toString());
-					// dataArray.add(JSONObject.fromObject(row).toString());
 				}
 				listNodes.put("Records", dataArray);
 				returnCode = LIST_SUCCESS;
@@ -296,7 +297,7 @@ public class ArticleAction extends BaseAction {
 			String nodeid = (String) httpServletRequest.getParameter("ID");
 			if (nodeid != null) {
 				int intNodeId = Integer.parseInt(nodeid);
-				nodeDao.deleteNodeById(intNodeId);
+				nodeService.deleteNodeById(intNodeId);
 				deleteStatus.put("Result", "OK");
 				returnCode = DELETE_SUCCESS;
 			}

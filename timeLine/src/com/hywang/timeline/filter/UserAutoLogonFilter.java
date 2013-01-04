@@ -12,22 +12,24 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.hywang.timeline.entity.User;
-import com.hywang.timeline.persistence.dao.UserDAO;
+import com.hywang.timeline.services.UserService;
 
 public class UserAutoLogonFilter implements Filter {
 
-	private UserDAO userDao;
+	private UserService userService;
    
-	public UserDAO getUserDao() {
-		return userDao;
+	public UserService getUserService() {
+		return userService;
 	}
 
-	public void setUserDao(UserDAO userDao) {
-		this.userDao = userDao;
+	@Autowired
+	public void setUserService(UserService userService) {
+		this.userService = userService;
 	}
 
 	public void destroy() {
@@ -78,7 +80,7 @@ public class UserAutoLogonFilter implements Filter {
                     }
                 }
                 try {
-                    isAutoLogin = userDao.getAutoLoginState(username, sessionid);// 如果在数据库中找到了相应记录，则说明可以自动登录。
+                    isAutoLogin = userService.getAutoLoginState(username, sessionid);// 如果在数据库中找到了相应记录，则说明可以自动登录。
                     if (isAutoLogin) {
                         user.setId(Integer.parseInt(userid));
                         user.setUserName(username);
@@ -100,7 +102,7 @@ public class UserAutoLogonFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
     	WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
-    	userDao= (UserDAO) wac.getBean("userDao");
+    	userService= (UserService) wac.getBean("userService");
     }
 
 }

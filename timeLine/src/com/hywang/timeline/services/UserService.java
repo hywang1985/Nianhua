@@ -1,4 +1,4 @@
-package com.hywang.timeline.persistence.dao;
+package com.hywang.timeline.services;
 
 import java.util.List;
 
@@ -6,17 +6,18 @@ import org.springframework.dao.DataAccessException;
 
 import com.hywang.timeline.entity.LogonValidationInfo;
 import com.hywang.timeline.entity.User;
+import com.hywang.timeline.persistence.dao.Initializable;
 
 
-public interface UserDAO {
+public interface UserService extends Initializable{
     
     public void addUser(String userName,String pwd,String email,String firstName,String lastName)  throws DataAccessException;
 
     public void addUser(User user) throws DataAccessException;
     
-    public User getUserByID(int id);
+    public User getUserByID(int id,boolean initChildren);
     
-    public User getUserByName(String userName);
+    public User getUserByName(String userName ,boolean initChildren);
     
     public List<User> getAllUsers();
     

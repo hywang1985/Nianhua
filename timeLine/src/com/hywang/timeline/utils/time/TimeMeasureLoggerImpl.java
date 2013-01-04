@@ -28,7 +28,7 @@ import com.hywang.timeline.utils.time.TimeMeasure.ELogFileColumnConstant;
 /**
  * DOC hywang class global comment. Detailled comment
  */
-@Component
+@Component("logger")
 public class TimeMeasureLoggerImpl implements ITimeMeasureLogger {
 
     public void logToFile(Map<String, List<Map<Integer, Object>>> logValue, String logFilePath) {

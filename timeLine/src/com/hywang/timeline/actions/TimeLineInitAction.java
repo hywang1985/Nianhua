@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.hywang.timeline.entity.TimeLineNode;
-import com.hywang.timeline.persistence.dao.TimlineNodeDAO;
+import com.hywang.timeline.services.TimlineNodeService;
 import com.hywang.timeline.utils.PropertiesUtil;
 import com.hywang.timeline.utils.time.TimeMeasure;
 import com.hywang.timeline.utils.timeline.TimeLineNodeUtil;
@@ -25,15 +25,15 @@ public class TimeLineInitAction extends BaseAction {
 
 	private JSONObject timelineObj = null;
 	
-	@Autowired
-	private TimlineNodeDAO timelineDAO;
+	private TimlineNodeService nodeService;
 
-	public TimlineNodeDAO getTimelineDAO() {
-		return timelineDAO;
+	public TimlineNodeService getNodeService() {
+		return nodeService;
 	}
 
-	public void setTimelineDAO(TimlineNodeDAO timelineDAO) {
-		this.timelineDAO = timelineDAO;
+	@Autowired
+	public void setNodeService(TimlineNodeService nodeService) {
+		this.nodeService = nodeService;
 	}
 
 	public JSONObject getTimelineObj() {
@@ -66,7 +66,7 @@ public class TimeLineInitAction extends BaseAction {
 		TimeMeasure.begin(initArticles_key);
 		try {
 			
-			allNodes = timelineDAO.getAllNodes();
+			allNodes = nodeService.getAllNodes();
 			TimeMeasure.step(initArticles_key, "Loading articles from database");
 			for (TimeLineNode node : allNodes) {
 				if (node.getIsStartNode()) { // if node is start node,init the
