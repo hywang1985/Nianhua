@@ -1,4 +1,4 @@
-package com.hywang.timeline.interceptors;
+package com.hywang.timeline.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
