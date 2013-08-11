@@ -77,7 +77,7 @@
 			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
-				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay"></audio>
+				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay" loop="loop"></audio>
 			</ul>
 			<form class="navbar-form pull-right form-inline" action="/user/user_login" method="post">
 				<input type="text" class="input-small" style="margin-top: 0px;" placeholder="账户名" name="username">
@@ -97,7 +97,7 @@
 			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
-				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay"></audio>				
+				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay" loop="loop"></audio>				
 			</ul>
 		
 			<ul class="nav pull-right">
