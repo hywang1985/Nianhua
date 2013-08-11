@@ -34,56 +34,40 @@
 		
 		
 		<!-- JavaScript -->
-<!--
-		<script src="js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-		<script src="js/bootstrap/js/jquery.hotkeys-0.7.9.min.js" type="text/javascript"></script>
--->
 		<script type="text/javascript" src="<%=basePath%>js/jquery-1.7.2.min.js"></script>
-	<!-- 	<script type="text/javascript" src="js/jquery-string-object.js"></script> -->
 		<script type="text/javascript" src="<%=basePath%>js/timeline.js"></script>
+		<script src="<%=basePath%>js/audiojs/audio.min.js" type="text/javascript"></script>
 
 		<script>
-		$().ready(function() {
-		var timeline = new VMM.Timeline();
-		timeline.init("/init/timeline_init"); //AJAX异步调用初始化，不要在这个ACTION做的时候加入interceptor返回到这个页面，否则会有不同步的问题
+			audiojs.events.ready(function() { //audiojs,initialize the music.
+				var as = audiojs.createAll();
+			});
+			$().ready(function() {
+				var timeline = new VMM.Timeline();
+				timeline.init("/init/timeline_init"); //AJAX异步调用初始化，不要在这个ACTION做的时候加入interceptor返回到这个页面，否则会有不同步的问题
 
-		$("a#register").click(function() {
-			$("form#register-window").fadeIn(200);
-		});
-		$(".close").click(function() {
-			$("form#register-window").fadeOut(200);
-		});
-
-		$("#hidden").mouseenter(function() {
-			$("#hidden").css("opacity","100");
+			$("a#register").click(function() {
+				$("form#register-window").fadeIn(200);
+			});
+			$(".close").click(function() {
+				$("form#register-window").fadeOut(200);
 			});
 
-		
-		$("#hidden").mouseleave(function() {
-			$("#hidden").css("opacity","0");
+			$("#hidden").mouseenter(function() {
+				$("#hidden").css("opacity", "100");
 			});
-		//键盘展开关闭navbar事件，通过hotkeys.js实现
-//		$(document).bind("keydown", "down", function(ev) {
-//			$("#hidden").animate({
-//				height : 40
-//			}, 320); //其它处理事件;    
-//			return false;
-//		});
 
-//		$(document).bind("keydown", "up", function(ev) {
-//			$("#hidden").animate({
-//				height : 0
-//			}, 320); //其它处理事件;    
-//			return false;
-//		});
+			$("#hidden").mouseleave(function() {
+				$("#hidden").css("opacity", "0");
+			});
 
-	});
+		});
 </script>
 
 
 	</head>
 	<body>
-	<!--导航栏-->
+<!--导航栏-->
 <div id="hidden" style="position: absolute;top: 0;left: 0;z-index: 200;width:100%;opacity:0;height:40px;">
 <%if(user==null) {%>
 
@@ -93,8 +77,8 @@
 			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
+				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay"></audio>
 			</ul>
-		
 			<form class="navbar-form pull-right form-inline" action="/user/user_login" method="post">
 				<input type="text" class="input-small" style="margin-top: 0px;" placeholder="账户名" name="username">
 				<input type="password" class="input-small" style="margin-top: 0px;" placeholder="密码"  name="password">
@@ -113,12 +97,7 @@
 			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
-				<li><a href="#">Link Text</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="#">Link Text</a></li>
-				<li class="divider-vertical"></li>
-				<li><a href="#">Link Text</a></li>
-				<li class="divider-vertical"></li>
+				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay"></audio>				
 			</ul>
 		
 			<ul class="nav pull-right">
@@ -142,6 +121,7 @@
 
 
 
+
 <!--_注册弹出页面_-->
 	<form id="register-window" action="/user/user_register" method="post" class="well" style="width: 230px;margin-left: -130px;position: absolute;left: 50%;margin-top: 100px;display: none; z-index:999;box-shadow: 0px 3px 20px #000000;">
 	<a class="close">&times;</a>
@@ -156,8 +136,12 @@
 	<button  class="btn-primary btn btn-large" style="width: 220px;" type="submit"><i class="icon-plus icon-white"></i> 注册</button>	
 	</form>
 
+
+
+
 <!-- timeline块 -->
-<div id="timeline"></div>
+<div id="timeline">
+</div>
 	
 		
 

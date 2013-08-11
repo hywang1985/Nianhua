@@ -4992,7 +4992,18 @@ if (typeof VMM.Slider != 'undefined') {
 //			VMM.appendAndGetElement($bgm, " <source src=\"http://cdn02.cdn.gorillavsbear.net/wp-content/uploads/2010/11/gorilla-vs.-bear-november-2010.mp3\">");
 			
 			
-			
+			/*hywang added for adding background music for slider,when slide to the current slider,music need to
+			 * be change also.Audio tag only supported by html5 only.
+			 * ==================================*/
+			if(data.bgrmsc!=null && data.bgrmsc!=""){
+//				$mscbgr	=VMM.appendAndGetElement($slide, "<audio src=\""+data.bgrmsc+"\">");
+//				VMM.Lib.css($imgbgr, "width","0"); //no width and height at all for music
+//				VMM.Lib.css($imgbgr, "height","0");
+//				VMM.Lib.css($imgbgr, "position","absolute");
+//				VMM.Lib.css($imgbgr, "top","0px");
+//				VMM.Lib.css($imgbgr, "margin","0px");
+//				VMM.Lib.css($imgbgr, "z-index","-10");
+			}
 			
 			
 			/* DATE
@@ -6633,6 +6644,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 						_date.uniqueid			= VMM.Util.unique_ID(7);
 						_date.author            = data.date[i].author; //hywang
 						_date.bgrimg            = data.date[i].bgrimg; //hywang
+						_date.bgrmsc            = data.date[i].bgrmsc; //hywang
 						
 						_dates.push(_date);
 					} 
