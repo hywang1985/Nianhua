@@ -49,8 +49,12 @@ public class TimelineNodeServiceImpl implements TimlineNodeService{
     }
     
 
-    public TimeLineNode getNodeByID(int nodeId) throws DataAccessException {
-        return this.dao.getHibernateTemplate().load(TimeLineNode.class, nodeId);
+    public TimeLineNode getNodeByID(int nodeId,boolean needInitlized) throws DataAccessException {
+        TimeLineNode pickedNode = this.dao.getHibernateTemplate().load(TimeLineNode.class, nodeId);
+        if(pickedNode!=null && needInitlized){
+        	initlinazeObject(pickedNode);
+        }
+		return pickedNode;
     }
     
     
@@ -62,6 +66,11 @@ public class TimelineNodeServiceImpl implements TimlineNodeService{
 	@Override
 	public void initlinazeObject(Object proxy) {
 		Hibernate.initialize(proxy);
+	}
+
+	@Override
+	public void updateNode(TimeLineNode node) {
+		this.dao.getHibernateTemplate().update(node);
 	}
 
 //    private String addQuote(String value) {

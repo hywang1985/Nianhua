@@ -1,5 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page import="com.hywang.timeline.entity.User" %>
 <%
+	User user =null;
+	Object userObject =request.getSession().getAttribute("user");
+	if(userObject!=null){
+	    user=(User)userObject;
+	}
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
@@ -39,8 +45,8 @@ body {
 		$("#manage_tab").click(
 				function() {
 					$.getJSON("/article/article_load", function(data) {
-						$("#PersonTableContainer").jtable(data);
-						$("#PersonTableContainer").jtable('load');
+						$("#ArticlesContainer").jtable(data);
+						$("#ArticlesContainer").jtable('load');
 					});
 				});
 	});
@@ -51,26 +57,11 @@ body {
 			<div class="navbar-inner">
 				<div class="container-fluid">
 					<a class="brand " href="/timeline.jsp" style="color: white;">年华</a>
-					<ul class="nav">
-						<li class="divider-vertical"></li>
-						<li>
-							<a href="#">Link Text</a>
-						</li>
-						<li class="divider-vertical"></li>
-						<li>
-							<a href="#">Link Text</a>
-						</li>
-						<li class="divider-vertical"></li>
-						<li>
-							<a href="#">Link Text</a>
-						</li>
-						<li class="divider-vertical"></li>
-					</ul>
 
 					<ul class="nav pull-right">
 						<li class="divider-vertical"></li>
 						<li>
-							<a href="#"><i class="icon-user icon-white"></i> wbrover</a>
+							<a href="#"><i class="icon-user icon-white"></i>  <%=user.getUserName() %></a>
 						</li>
 						<li class="divider-vertical"></li>
 						<li>
@@ -199,7 +190,7 @@ body {
 
 
 					<div class="tab-pane" id="2">
-						<div id="PersonTableContainer"></div>
+						<div id="ArticlesContainer"></div>
 					</div>
 				</div>
 			</div>

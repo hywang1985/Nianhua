@@ -31,6 +31,8 @@ public class ArticleAction extends BaseAction {
 	private static final String LIST_SUCCESS = "list_success";
 
 	private static final String DELETE_SUCCESS = "delete_success";
+	
+	private static final String UPDATE_SUCCESS = "update_success";
 
 	private JSONObject tableConfigObject = null;
 
@@ -38,6 +40,7 @@ public class ArticleAction extends BaseAction {
 
 	private JSONObject deleteStatus = null;
 	
+	private JSONObject updateStatus = null;
 	
 	private TimlineNodeService nodeService;
 
@@ -84,8 +87,8 @@ public class ArticleAction extends BaseAction {
 		String bgrimg = httpServletRequest.getParameter("bgrimg");
 
 		TimeLineNode node = new TimeLineNode();
-		Date sdate = getDate(startDate);
-		Date edate = getDate(endDate);
+		Date sdate = getDateForDataPicker(startDate);
+		Date edate = getDateForDataPicker(endDate);
 		node.setStartDate(sdate);
 		node.setEndDate(edate);
 		node.setMedia(media);
@@ -112,7 +115,7 @@ public class ArticleAction extends BaseAction {
 		this.tableConfigObject = tableConfigObject;
 	}
 
-	private Date getDate(String inputDate) {
+	private Date getDateForDataPicker(String inputDate) {
 		Calendar time = Calendar.getInstance();
 		if (inputDate != null && !"".equals(inputDate)) {
 			String[] dateArray = inputDate.split("/");
@@ -125,7 +128,6 @@ public class ArticleAction extends BaseAction {
 			time.set(Calendar.DATE, Integer.parseInt(day));
 		}
 		return time.getTime();
-		// date.set
 	}
 
 	public String loadArticles() {
@@ -136,7 +138,7 @@ public class ArticleAction extends BaseAction {
 		Map<String, String> actionOptions = new HashMap<String, String>();
 		actionOptions.put("listAction", "/article/article_list");
 		actionOptions.put("createAction", "/article/article_create");
-		actionOptions.put("updateAction", "/article/article_list");
+		actionOptions.put("updateAction", "/article/article_update");
 		actionOptions.put("deleteAction", "/article/article_delete");
 		tableConfig.put("actions", actionOptions);
 
@@ -161,7 +163,7 @@ public class ArticleAction extends BaseAction {
 
 		columns.put("media", columnsOptions.get("media"));
 
-		columns.put("capion", columnsOptions.get("caption"));
+		columns.put("caption", columnsOptions.get("caption"));
 
 		columns.put("credit", columnsOptions.get("credit"));
 
@@ -305,8 +307,77 @@ public class ArticleAction extends BaseAction {
 			logger.error(e);
 			deleteStatus.put("ERROR", e.getMessage());
 		} finally {
+			
 		}
 		return returnCode;
+	}
+	
+	public String updateArticle(){
+		String returnCode = ActionSupport.ERROR; 
+		if(updateStatus == null){
+			updateStatus = new JSONObject();
+		}else{
+			updateStatus.clear();
+		}
+		try {
+			String nodeid = (String) httpServletRequest.getParameter("ID");
+//			tags, headLine, startDate, text, ID, endDate, credit, media, caption
+			String tags = httpServletRequest.getParameter("tags");
+			String headLine = httpServletRequest.getParameter("headLine");
+			String startDate = httpServletRequest.getParameter("startDate");
+			String text = httpServletRequest.getParameter("text");
+			String endDate = httpServletRequest.getParameter("endDate");
+			String credit = httpServletRequest.getParameter("credit");
+			String media = httpServletRequest.getParameter("media");
+			String caption = httpServletRequest.getParameter("caption");
+			
+			TimeLineNode currentNode = nodeService.getNodeByID(Integer.parseInt(nodeid),true);
+		
+			//reset parameters for current node.
+			currentNode.setTags(tags);
+			currentNode.setHeadline(headLine);
+			Date sdate = getDateForJTable(startDate);
+			Date edate = getDateForJTable(endDate);
+			currentNode.setStartDate(sdate);
+			currentNode.setEndDate(edate);
+			currentNode.setMedia(media);
+			currentNode.setCaption(caption);
+			currentNode.setCredit(credit);
+			currentNode.setText(text);
+			//update the current node.
+			nodeService.updateNode(currentNode);
+			updateStatus.put("Result", "OK");
+			returnCode = UPDATE_SUCCESS;
+		} catch (Exception e) {
+			logger.error(e);
+			updateStatus.put("ERROR", e.getMessage());
+		}finally{
+			
+		}
+		return returnCode;
+	}
+
+	private Date getDateForJTable(String dateString) {
+		Calendar time = Calendar.getInstance();
+		if (dateString != null && !"".equals(dateString)) {
+			String[] dateArray = dateString.split("-");
+			String year = dateArray[0];
+			String month = dateArray[1];
+			String day = dateArray[2];
+			time.clear();
+			time.set(Calendar.YEAR, Integer.parseInt(year));
+			time.set(Calendar.MONTH, Integer.parseInt(month));
+			time.set(Calendar.DATE, Integer.parseInt(day));
+		}
+		return time.getTime();
+	}
+
+	public JSONObject getUpdateStatus() {
+		return updateStatus;
+	}
+
+	public void setUpdateStatus(JSONObject updateStatus) {
+		this.updateStatus = updateStatus;
 	}
 
 }

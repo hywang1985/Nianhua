@@ -81,5 +81,10 @@
 				<param name="root">deleteStatus</param>
 			</result>
 		</action>
+		<action name="article_update" class="articleAction" method=" updateArticle">
+			<result name="update_success" type="json">
+				<param name="root">updateStatus</param>
+			</result>
+		</action>
 	</package>
 </struts>
