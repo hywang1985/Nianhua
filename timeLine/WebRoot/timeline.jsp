@@ -44,7 +44,7 @@
 			});
 			$().ready(function() {
 				var timeline = new VMM.Timeline();
-				timeline.init("/init/timeline_init"); //AJAX异步调用初始化，不要在这个ACTION做的时候加入interceptor返回到这个页面，否则会有不同步的问题
+				timeline.init("<%=basePath%>"+"/init/timeline_init"); //AJAX异步调用初始化，不要在这个ACTION做的时候加入interceptor返回到这个页面，否则会有不同步的问题
 
 			$("a#register").click(function() {
 				$("form#register-window").fadeIn(200);
@@ -79,7 +79,7 @@
 				<li class="divider-vertical"></li>
 				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay" loop="loop"></audio>
 			</ul>
-			<form class="navbar-form pull-right form-inline" action="/user/user_login" method="post">
+			<form class="navbar-form pull-right form-inline" action="<%=basePath%>/user/user_login" method="post">
 				<input type="text" class="input-small" style="margin-top: 0px;" placeholder="账户名" name="username">
 				<input type="password" class="input-small" style="margin-top: 0px;" placeholder="密码"  name="password">
 				<label class="checkbox"><input type="checkbox" name="rememberme" value="true">记住我</label>
@@ -97,7 +97,7 @@
 			<a class="brand " href="#"><img src="<%=basePath%>js/bootstrap/img/nianhua-logo2.png" alt=""/ style="margin-top: -6px;margin-right: 10px;">年华</a>
 			<ul class="nav">
 				<li class="divider-vertical"></li>
-				<audio id="player" src="<%=basePath%>/music/Drenched.mp3" preload="auto" autoplay="autoplay" loop="loop"></audio>				
+				<audio id="player" src="/music/Drenched.mp3" preload="auto" autoplay="autoplay" loop="loop"></audio>				
 			</ul>
 		
 			<ul class="nav pull-right">
@@ -110,7 +110,7 @@
 			<li class="divider-vertical"></li>
 			<li><a href="#"><i class="icon-cog icon-white"></i> 设置</a></li>
 			<li class="divider-vertical"></li>
-			<li><a href="/user/user_logout"><span class="label label-important">登出</span></a></li>
+			<li><a href="<%=basePath%>/user/user_logout"><span class="label label-important">登出</span></a></li>
 			</ul>
 		</div>
 	</div>
@@ -123,7 +123,7 @@
 
 
 <!--_注册弹出页面_-->
-	<form id="register-window" action="/user/user_register" method="post" class="well" style="width: 230px;margin-left: -130px;position: absolute;left: 50%;margin-top: 100px;display: none; z-index:999;box-shadow: 0px 3px 20px #000000;">
+	<form id="register-window" action="<%=basePath%>/user/user_register" method="post" class="well" style="width: 230px;margin-left: -130px;position: absolute;left: 50%;margin-top: 100px;display: none; z-index:999;box-shadow: 0px 3px 20px #000000;">
 	<a class="close">&times;</a>
 	<legend>注册年华	<small>相信我，这很快</small></legend>
 	<input type="text" name="username" placeholder="账户" />
